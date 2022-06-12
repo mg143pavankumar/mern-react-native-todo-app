@@ -1,12 +1,14 @@
 import { User } from "../models/User.js";
 import { sendMail } from "../utils/sendMail.js";
 import { sendToken } from "../utils/sendToken.js";
+import cloudinary from "cloudinary";
+import fs from "fs";
 
 export const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // const {avatar} = req.files;
+    const avatar = req.files.avatar.tempFilePath;
 
     let user = await User.findOne({ email });
 
@@ -19,13 +21,22 @@ export const register = async (req, res) => {
     // for otp
     const otp = Math.floor(Math.random() * 1000000);
 
+    const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+      folder: "todoApp",
+    });
+
+    // deleting temp folder after uploading to cloudinary
+    fs.rmSync("./temp", {
+      recursive: true,
+    });
+
     user = await User.create({
       name,
       email,
       password,
       avatar: {
-        public_id: "",
-        url: "",
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
       },
       otp,
       otp_expiry: new Date(Date.now() + process.env.OTP_EXPIRE * 60 * 1000),
@@ -218,14 +229,24 @@ export const updateUserProfile = async (req, res) => {
     const user = await User.findById(req.user._id);
 
     const { name } = req.body;
-    // const { avatar } = req.files;
+    const avatar = req.files.avatar.tempFilePath;
 
     if (name) {
       user.name = name;
     }
 
-    // if (avatar) {
-    // }
+    if (avatar) {
+      await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+
+      const myCloud = await cloudinary.v2.uploader.upload(avatar);
+
+      fs.rmSync("temp", { recursive: true });
+
+      user.avatar = {
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url,
+      };
+    }
 
     await user.save();
 
