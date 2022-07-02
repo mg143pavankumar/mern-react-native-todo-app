@@ -26,7 +26,7 @@ export const register = async (req, res) => {
     });
 
     // deleting temp folder after uploading to cloudinary
-    fs.rmSync("./temp", {
+    fs.rmSync("./tmp", {
       recursive: true,
     });
 
@@ -240,7 +240,7 @@ export const updateUserProfile = async (req, res) => {
 
       const myCloud = await cloudinary.v2.uploader.upload(avatar);
 
-      fs.rmSync("temp", { recursive: true });
+      fs.rmSync("./tmp", { recursive: true });
 
       user.avatar = {
         public_id: myCloud.public_id,
