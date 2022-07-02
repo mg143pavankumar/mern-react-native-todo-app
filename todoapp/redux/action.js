@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const serverUrl = process.env.SERVER_URL;
+const serverUrl = "https://react-native-todo-app-server.herokuapp.com/api/v1";
 
 export const login = (email, password) => async (dispatch) => {
   try {
