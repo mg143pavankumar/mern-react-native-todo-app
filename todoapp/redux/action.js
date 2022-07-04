@@ -36,7 +36,7 @@ export const register = (formData) => async (dispatch) => {
       },
     });
 
-    dispatch({ type: "registerSuccess", payload: data.message });
+    dispatch({ type: "registerSuccess", payload: data });
   } catch (err) {
     dispatch({ type: "registerFail", payload: err.response.data });
   }
@@ -154,3 +154,25 @@ export const updatePassword =
       dispatch({ type: "updatePasswordFail", payload: err.response.data });
     }
   };
+
+export const verify = (otp) => async (dispatch) => {
+  try {
+    dispatch({ type: "verificationRequest" });
+
+    const { data } = await axios.post(
+      `${serverUrl}/verifyAuth`,
+      {
+        otp,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    dispatch({ type: "verificationSuccess", payload: data.message });
+  } catch (err) {
+    dispatch({ type: "verificationFail", payload: err.response.data });
+  }
+};

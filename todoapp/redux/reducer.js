@@ -135,9 +135,23 @@ export const messageReducer = createReducer(
     },
     updatePasswordSuccess: (state, action) => {
       state.loading = false;
-      state.message = action.payload.message;
+      state.message = action.payload;
     },
     updatePasswordFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
+    // verify reducer
+    verificationRequest: (state) => {
+      state.loading = true;
+    },
+    verificationSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+
+    verificationFail: (state, action) => {
       state.loading = false;
       state.error = action.payload.error;
     },

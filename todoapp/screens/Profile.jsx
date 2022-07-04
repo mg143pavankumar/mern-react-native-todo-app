@@ -25,7 +25,7 @@ const Profile = ({ navigation, route }) => {
     });
   };
 
-  const updateProfileHandler = () => {
+  const updateProfileHandler = async () => {
     const myForm = new FormData();
 
     myForm.append("name", name);
@@ -35,7 +35,7 @@ const Profile = ({ navigation, route }) => {
       name: avatar.split("/").pop(),
     });
 
-    dispatch(updateProfile(myForm));
+    await dispatch(updateProfile(myForm));
     dispatch(loadUser());
   };
 
@@ -98,6 +98,15 @@ const Profile = ({ navigation, route }) => {
         >
           <Text style={{ color: "#fff" }}>Change Password</Text>
         </Button>
+
+        {user.verified ? null : (
+          <Button
+            style={styles.btn2}
+            onPress={() => navigation.navigate("verify")}
+          >
+            <Text style={{ color: "#900" }}>Verify</Text>
+          </Button>
+        )}
 
         <Button style={styles.btn2} onPress={logoutHandler}>
           <Text style={{ color: "#900" }}>Logout</Text>

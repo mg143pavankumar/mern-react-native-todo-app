@@ -8,6 +8,7 @@ import {
   Login,
   Profile,
   Register,
+  Verify,
 } from "./screens";
 import { Footer, Loader } from "./components";
 import { useSelector, useDispatch } from "react-redux";
@@ -46,6 +47,12 @@ const Main = () => {
         <Stack.Screen
           name="register"
           component={Register}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="verify"
+          component={Verify}
           options={{ headerShown: false }}
         />
 
