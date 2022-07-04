@@ -19,8 +19,6 @@ const Login = ({ navigation }) => {
 
   const loginHandler = () => {
     dispatch(login(email, password));
-
-    // navigation.navigate("home");
   };
 
   useEffect(() => {
@@ -76,6 +74,16 @@ const Login = ({ navigation }) => {
           }}
         >
           Don't have an account, Sign Up
+        </Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity onPress={() => navigation.navigate("forgotpassword")}>
+        <Text
+          style={{
+            fontSize: 15,
+          }}
+        >
+          Forgot Password
         </Text>
       </TouchableOpacity>
     </View>

@@ -1,7 +1,15 @@
 import React, { useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { CameraScreen, Home, Login, Profile, Register } from "./screens";
+import {
+  CameraScreen,
+  ChangePassword,
+  Home,
+  Login,
+  Profile,
+  Register,
+  Verify,
+} from "./screens";
 import { Footer, Loader } from "./components";
 import { useSelector, useDispatch } from "react-redux";
 import { loadUser } from "./redux/action";
@@ -43,8 +51,20 @@ const Main = () => {
         />
 
         <Stack.Screen
+          name="verify"
+          component={Verify}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
           name="camera"
           component={CameraScreen}
+          options={{ headerShown: false }}
+        />
+
+        <Stack.Screen
+          name="changepassword"
+          component={ChangePassword}
           options={{ headerShown: false }}
         />
       </Stack.Navigator>

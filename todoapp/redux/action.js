@@ -25,6 +25,36 @@ export const login = (email, password) => async (dispatch) => {
   }
 };
 
+// register user
+export const register = (formData) => async (dispatch) => {
+  try {
+    dispatch({ type: "registerRequest" });
+
+    const { data } = await axios.post(`${serverUrl}/register`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    dispatch({ type: "registerSuccess", payload: data });
+  } catch (err) {
+    dispatch({ type: "registerFail", payload: err.response.data });
+  }
+};
+
+// logout user
+export const logout = () => async (dispatch) => {
+  try {
+    dispatch({ type: "logoutRequest" });
+
+    await axios.get(`${serverUrl}/logout`);
+
+    dispatch({ type: "logoutSuccess" });
+  } catch (err) {
+    dispatch({ type: "logoutFail", payload: err.response.data });
+  }
+};
+
 export const loadUser = () => async (dispatch) => {
   try {
     dispatch({ type: "loadUserRequest" });
@@ -81,5 +111,68 @@ export const deleteTask = (taskId) => async (dispatch) => {
     dispatch({ type: "deleteTaskSuccess", payload: data });
   } catch (err) {
     dispatch({ type: "deleteTaskFail", payload: err.response.data });
+  }
+};
+
+export const updateProfile = (formData) => async (dispatch) => {
+  try {
+    dispatch({ type: "updateProfileRequest" });
+
+    const { data } = await axios.put(`${serverUrl}/updateprofile`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    dispatch({ type: "updateProfileSuccess", payload: data.message });
+  } catch (err) {
+    dispatch({ type: "updateProfileFail", payload: err.response.data });
+  }
+};
+
+// udpate password
+export const updatePassword =
+  (oldPassword, newPassword) => async (dispatch) => {
+    try {
+      dispatch({ type: "updatePasswordRequest" });
+
+      const { data } = await axios.put(
+        `${serverUrl}/updatePassword`,
+        {
+          oldPassword,
+          newPassword,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      dispatch({ type: "updatePasswordSuccess", payload: data.message });
+    } catch (err) {
+      dispatch({ type: "updatePasswordFail", payload: err.response.data });
+    }
+  };
+
+export const verify = (otp) => async (dispatch) => {
+  try {
+    dispatch({ type: "verificationRequest" });
+
+    const { data } = await axios.post(
+      `${serverUrl}/verifyAuth`,
+      {
+        otp,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    dispatch({ type: "verificationSuccess", payload: data.message });
+  } catch (err) {
+    dispatch({ type: "verificationFail", payload: err.response.data });
   }
 };
