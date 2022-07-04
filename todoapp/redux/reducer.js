@@ -142,6 +142,32 @@ export const messageReducer = createReducer(
       state.error = action.payload.error;
     },
 
+    // forget password reducer
+    forgetPasswordRequest: (state) => {
+      state.loading = true;
+    },
+    forgetPasswordSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    forgetPasswordFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
+    // reset password reducer
+    resetPasswordRequest: (state) => {
+      state.loading = true;
+    },
+    resetPasswordSuccess: (state, action) => {
+      state.loading = false;
+      state.message = action.payload;
+    },
+    resetPasswordFail: (state, action) => {
+      state.loading = false;
+      state.error = action.payload.error;
+    },
+
     // verify reducer
     verificationRequest: (state) => {
       state.loading = true;

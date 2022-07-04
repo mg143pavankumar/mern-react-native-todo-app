@@ -77,13 +77,13 @@ const Login = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => navigation.navigate("forgotpassword")}>
+      <TouchableOpacity onPress={() => navigation.navigate("forgetpassword")}>
         <Text
           style={{
             fontSize: 15,
           }}
         >
-          Forgot Password
+          Forget Password ?
         </Text>
       </TouchableOpacity>
     </View>

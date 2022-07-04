@@ -155,6 +155,52 @@ export const updatePassword =
     }
   };
 
+// forget password
+export const forgetPassword = (email) => async (dispatch) => {
+  try {
+    dispatch({ type: "forgetPasswordRequest" });
+
+    const { data } = await axios.post(
+      `${serverUrl}/forgetpassword`,
+      {
+        email,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    dispatch({ type: "forgetPasswordSuccess", payload: data.message });
+  } catch (err) {
+    dispatch({ type: "forgetPasswordFail", payload: err.response.data });
+  }
+};
+
+export const resetPassword = (otp, newPassword) => async (dispatch) => {
+  try {
+    dispatch({ type: "resetPasswordRequest" });
+
+    const { data } = await axios.put(
+      `${serverUrl}/resetpassword`,
+      {
+        otp,
+        newPassword,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    dispatch({ type: "resetPasswordSuccess", payload: data.message });
+  } catch (err) {
+    dispatch({ type: "resetPasswordFail", payload: err.response.data });
+  }
+};
+
 export const verify = (otp) => async (dispatch) => {
   try {
     dispatch({ type: "verificationRequest" });
