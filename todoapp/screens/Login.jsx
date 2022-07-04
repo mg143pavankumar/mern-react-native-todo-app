@@ -19,8 +19,6 @@ const Login = ({ navigation }) => {
 
   const loginHandler = () => {
     dispatch(login(email, password));
-
-    // navigation.navigate("home");
   };
 
   useEffect(() => {

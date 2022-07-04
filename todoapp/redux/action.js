@@ -129,3 +129,28 @@ export const updateProfile = (formData) => async (dispatch) => {
     dispatch({ type: "updateProfileFail", payload: err.response.data });
   }
 };
+
+// udpate password
+export const updatePassword =
+  (oldPassword, newPassword) => async (dispatch) => {
+    try {
+      dispatch({ type: "updatePasswordRequest" });
+
+      const { data } = await axios.put(
+        `${serverUrl}/updatePassword`,
+        {
+          oldPassword,
+          newPassword,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      dispatch({ type: "updatePasswordSuccess", payload: data.message });
+    } catch (err) {
+      dispatch({ type: "updatePasswordFail", payload: err.response.data });
+    }
+  };
