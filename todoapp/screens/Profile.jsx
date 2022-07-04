@@ -6,26 +6,54 @@ import {
   StyleSheet,
 } from "react-native";
 import { Avatar, Button } from "react-native-paper";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { loadUser, logout, updateProfile } from "../redux/action";
+import mime from "mime";
+import { Loader } from "../components";
 
-const Profile = ({ navigation }) => {
-  const { user } = useSelector((state) => state.auth);
+const Profile = ({ navigation, route }) => {
+  const { user, loading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
 
   const [avatar, setAvatar] = useState(user.avatar.url);
   const [name, setName] = useState(user.name);
 
   const handleImage = () => {
-    navigation.navigate("camera");
+    navigation.navigate("camera", {
+      updateProfile: true,
+    });
   };
 
   const updateProfileHandler = () => {
-    // navigation.navigate("camera");
+    const myForm = new FormData();
+
+    myForm.append("name", name);
+    myForm.append("avatar", {
+      uri: avatar,
+      type: mime.getType(avatar),
+      name: avatar.split("/").pop(),
+    });
+
+    dispatch(updateProfile(myForm));
+    dispatch(loadUser());
   };
 
-  const logoutHandler = () => {};
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
 
-  return (
+  useEffect(() => {
+    if (route.params) {
+      if (route.params.image) {
+        setAvatar(route.params.image);
+      }
+    }
+  }, [route]);
+
+  return loading ? (
+    <Loader />
+  ) : (
     <View
       style={{
         flex: 1,

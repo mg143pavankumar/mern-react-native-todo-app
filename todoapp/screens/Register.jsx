@@ -7,12 +7,18 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Button, Avatar } from "react-native-paper";
+import { useDispatch } from "react-redux";
+import { register } from "../redux/action";
+import mime from "mime";
 
 const Register = ({ navigation, route }) => {
+  const dispatch = useDispatch();
+
   const [avatar, setAvatar] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   useEffect(() => {
     if (route.params) {
@@ -22,10 +28,28 @@ const Register = ({ navigation, route }) => {
     }
   }, [route]);
 
-  const registerHandler = () => {};
+  const registerHandler = () => {
+    const myForm = new FormData();
+    myForm.append("name", name);
+    myForm.append("email", email);
+    myForm.append("password", password);
+    myForm.append("avatar", {
+      uri: avatar,
+      type: mime.getType(avatar),
+      name: avatar.split("/").pop(),
+    });
+
+    if (password !== confirmPassword) {
+      alert("Password and Confirm Password must be same");
+    } else {
+      dispatch(register(myForm));
+    }
+  };
 
   const handleImage = () => {
-    navigation.navigate("camera");
+    navigation.navigate("camera", {
+      updateProfile: false,
+    });
   };
 
   return (
@@ -71,6 +95,14 @@ const Register = ({ navigation, route }) => {
           placeholder="Password"
           value={password}
           onChangeText={setPassword}
+        />
+
+        <TextInput
+          secureTextEntry
+          style={styles.input}
+          placeholder="Confirm Password"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
         />
       </View>
 
